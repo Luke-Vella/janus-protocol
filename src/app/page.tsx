@@ -6,6 +6,7 @@ import React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { Analytics } from "@vercel/analytics/next";
 
 export default function Home() {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
@@ -86,6 +87,8 @@ export default function Home() {
           </div>
         </main>
         <div className="g-footer">test</div>
+
+        <Analytics />
       </div>
     </div>
   );
