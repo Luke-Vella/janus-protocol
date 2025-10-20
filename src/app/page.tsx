@@ -1,36 +1,27 @@
 "use client";
 
-import Image from "next/image";
-import { ThemeToggle } from "@/components/theme-toggle";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Analytics } from "@vercel/analytics/next";
+import { Navbar02 } from "@/components/ui/shadcn-io/navbar-02";
 
-export default function Home() {
+export default function HomePage() {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
+
+  const router = useRouter();
+
+  const handleCtaClick = () => {
+    router.push("/signup");
+  };
 
   return (
     <div className="font-nunito h-screen flex justify-center">
       <div className="w-full grid grid-rows-[60px_1fr_40px] gap-4 px-6 lg:px-">
-        <header className="g-header flex align-center gap-4 px-4 items-center">
-          <div className="g-header-left text-3xl">Luke Vella</div>
-          <div className="g-header-middle flex-1">
-            <Button variant="link" size="lg" className="ml-4">
-              Portfolio
-            </Button>
-            <Button variant="link" size="lg" className="ml-4">
-              Some side projects
-            </Button>
-            <Button variant="link" size="lg" className="ml-4">
-              Dog pics.
-            </Button>
-          </div>
-
-          <div className="g-header-right">
-            <ThemeToggle />
-          </div>
+        <header className="g-header flex items-center justify-between">
+          <Navbar02 onCtaClick={() => handleCtaClick()} />
         </header>
 
         <main className="g-body flex flex-col gap-6 items-center px-4 py-30 overflow-y-auto min-h-0">
