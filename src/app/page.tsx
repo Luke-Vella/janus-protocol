@@ -29,7 +29,6 @@ export default function HomePage() {
             <div className="flex flex-col items-center gap-10">
               <div className="flex flex-col">
                 <h1 className="text-8xl">LUKE VELLA</h1>
-
                 <div className="flex text-sm  gap-2 lg:gap-4 flex-wrap justify-start">
                   <div className="whitespace-nowrap">
                     Senior front-end Developer
