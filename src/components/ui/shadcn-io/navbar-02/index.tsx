@@ -20,7 +20,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import type { ComponentProps } from "react";
 
 // Hamburger icon component
 const HamburgerIcon = ({
@@ -138,13 +137,9 @@ export const Navbar02 = React.forwardRef<HTMLElement, Navbar02Props>(
   (
     {
       className,
-      logo = <BookOpenIcon />,
-      logoHref = "#",
       navigationLinks = defaultNavigationLinks,
       signInText = "Sign In",
-      signInHref = "#signin",
       ctaText = "Sign Up",
-      ctaHref = "#get-started",
       onSignInClick,
       onCtaClick,
       ...props
@@ -186,37 +181,6 @@ export const Navbar02 = React.forwardRef<HTMLElement, Navbar02Props>(
       },
       [ref]
     );
-
-    const renderIcon = (iconName: string) => {
-      switch (iconName) {
-        case "BookOpenIcon":
-          return (
-            <BookOpenIcon
-              size={16}
-              className="text-foreground opacity-60"
-              aria-hidden={true}
-            />
-          );
-        case "LifeBuoyIcon":
-          return (
-            <LifeBuoyIcon
-              size={16}
-              className="text-foreground opacity-60"
-              aria-hidden={true}
-            />
-          );
-        case "InfoIcon":
-          return (
-            <InfoIcon
-              size={16}
-              className="text-foreground opacity-60"
-              aria-hidden={true}
-            />
-          );
-        default:
-          return null;
-      }
-    };
 
     return (
       <header
