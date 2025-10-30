@@ -13,15 +13,15 @@ export default function HomePage() {
 
   const router = useRouter();
 
-  const handleCtaClick = () => {
-    router.push("/signup");
+  const handleCtaClick = (path: string) => {
+    router.push(path);
   };
 
   return (
     <div className="font-nunito h-screen flex justify-center">
       <div className="w-full grid grid-rows-[60px_1fr_40px] gap-4 px-6 lg:px-">
         <header className="g-header flex items-center justify-between">
-          <Navbar02 onCtaClick={() => handleCtaClick()} />
+          <Navbar02 onCtaClick={handleCtaClick} />
         </header>
 
         <main className="g-body flex flex-col gap-6 items-center px-4 py-30 overflow-y-auto min-h-0">

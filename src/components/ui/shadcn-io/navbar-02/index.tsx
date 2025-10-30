@@ -78,12 +78,13 @@ export interface Navbar02Props extends React.HTMLAttributes<HTMLElement> {
   ctaText?: string;
   ctaHref?: string;
   onSignInClick?: () => void;
-  onCtaClick?: () => void;
+  onCtaClick?: (path: string) => void;
 }
 
 // Default navigation links
 const defaultNavigationLinks: Navbar02NavItem[] = [
   { href: "#", label: "Home", icon: "HomeIcon" },
+  { href: "/posts", label: "Posts", icon: "PostIcon" },
   //   {
   //     label: "Features",
   //     submenu: true,
@@ -186,7 +187,7 @@ export const Navbar02 = React.forwardRef<HTMLElement, Navbar02Props>(
       <header
         ref={combinedRef}
         className={cn(
-          "sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 md:px-6 [&_*]:no-underline",
+          "sticky top-0 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 md:px-6 [&_*]:no-underline",
           className
         )}
         {...props}
@@ -370,7 +371,6 @@ export const Navbar02 = React.forwardRef<HTMLElement, Navbar02Props>(
                               navigationMenuTriggerStyle(),
                               "cursor-pointer"
                             )}
-                            onClick={(e) => e.preventDefault()}
                           >
                             {link.label}
                           </NavigationMenuLink>
@@ -400,7 +400,7 @@ export const Navbar02 = React.forwardRef<HTMLElement, Navbar02Props>(
               className="text-sm font-medium px-4 h-9 rounded-md shadow-sm"
               onClick={(e) => {
                 e.preventDefault();
-                if (onCtaClick) onCtaClick();
+                if (onCtaClick) onCtaClick("/signup"); // ← Calls your handleCtaClick
               }}
             >
               {ctaText}
