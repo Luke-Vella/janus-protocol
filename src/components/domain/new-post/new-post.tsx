@@ -4,7 +4,7 @@ import classes from "./new-post.module.css";
 
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 
 interface NewPostProps {
   onBodyChangeHandler?: (body: string) => void;
@@ -30,9 +30,14 @@ function NewPost(props: NewPostProps) {
         onChange={(event) => props.onAuthorChangeHandler?.(event.target.value)}
       />
 
-      <Button className="my-2" type="submit" variant="default">
-        Post
-      </Button>
+      <div className="flex gap-4">
+        <Button className="flex-1 my-2" type="submit" variant="default">
+          Post
+        </Button>
+        <Button className="flex-1 my-2" type="button" variant="outline">
+          Cancel
+        </Button>
+      </div>
     </form>
   );
 }

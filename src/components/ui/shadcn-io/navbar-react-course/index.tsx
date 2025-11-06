@@ -83,8 +83,8 @@ export interface Navbar02Props extends React.HTMLAttributes<HTMLElement> {
 
 // Default navigation links
 const defaultNavigationLinks: Navbar02NavItem[] = [
-  { href: "#", label: "Home", icon: "HomeIcon" },
-  { href: "/posts", label: "Posts", icon: "PostIcon" },
+  { href: "/react-course", label: "Home", icon: "HomeIcon" },
+  { href: "/react-course/posts", label: "Posts", icon: "PostIcon" },
   //   {
   //     label: "Features",
   //     submenu: true,
@@ -384,17 +384,6 @@ export const Navbar02 = React.forwardRef<HTMLElement, Navbar02Props>(
           </div>
           {/* Right side */}
           <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-sm font-medium hover:bg-accent hover:text-accent-foreground"
-              onClick={(e) => {
-                e.preventDefault();
-                if (onSignInClick) onSignInClick();
-              }}
-            >
-              {signInText}
-            </Button>
             <Button
               size="sm"
               className="text-sm font-medium px-4 h-9 rounded-md shadow-sm"
