@@ -8,12 +8,29 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as zod from "zod";
+
+const schema = zod.object({
+  content: zod.string().min(5, "Content must be at least 5 characters"),
+});
 
 export default function NewPostModal() {
   const router = useRouter();
+  const form = useForm<zod.infer<typeof schema>>({
+    defaultValues: {
+      content: "",
+    },
+    resolver: zodResolver(schema),
+  });
 
   const close = () => {
-    router.replace("/react-course/posts"); // deterministic, not history-dependent
+    router.back();
   };
 
   return (
@@ -28,14 +45,22 @@ export default function NewPostModal() {
           <DialogTitle>Create a new post</DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-3">
-          <p>New Post form goes here.</p>
-          <button
-            className="rounded-md bg-primary px-3 py-2 text-primary-foreground"
-            onClick={close}
-          >
-            Close
-          </button>
+        <div>
+          <div className="form-content my-4">
+            <div className="space-y-2">
+              <Label htmlFor="post-content">Content</Label>
+              <Textarea id="post-content" placeholder="Post content..." />
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-2 ">
+            <Button type="button" variant="outline" onClick={close}>
+              Cancel
+            </Button>
+            <Button type="submit" variant="default" onClick={close}>
+              Create Post
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

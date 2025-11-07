@@ -23,6 +23,7 @@ export default function ReactCourseLayout({
           }
         />
       </header>
+
       <main className="g-body overflow-y-auto min-h-0 px-6 py-6">
         {children}
       </main>
