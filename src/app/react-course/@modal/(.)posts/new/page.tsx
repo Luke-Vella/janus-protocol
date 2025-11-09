@@ -12,22 +12,25 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as zod from "zod";
-
-const schema = zod.object({
-  content: zod.string().min(5, "Content must be at least 5 characters"),
-});
+import { useState } from "react";
+import { usePostStore } from "@/stores/post-store";
 
 export default function NewPostModal() {
   const router = useRouter();
-  const form = useForm<zod.infer<typeof schema>>({
-    defaultValues: {
-      content: "",
-    },
-    resolver: zodResolver(schema),
-  });
+
+  const [content, setContent] = useState("");
+  const addPost = usePostStore((s) => s.addPost);
+
+  function submitHandler(event: React.FormEvent) {
+    event.preventDefault();
+    const postData = {
+      body: content,
+      title: content.slice(0, 20) || "Untitled Post",
+      createdAt: new Date(),
+    };
+
+    addPost(postData);
+  }
 
   const close = () => {
     router.back();
@@ -45,11 +48,16 @@ export default function NewPostModal() {
           <DialogTitle>Create a new post</DialogTitle>
         </DialogHeader>
 
-        <div>
+        <form onSubmit={submitHandler}>
           <div className="form-content my-4">
             <div className="space-y-2">
               <Label htmlFor="post-content">Content</Label>
-              <Textarea id="post-content" placeholder="Post content..." />
+              <Textarea
+                id="post-content"
+                placeholder="Post content..."
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+              />
             </div>
           </div>
 
@@ -61,7 +69,7 @@ export default function NewPostModal() {
               Create Post
             </Button>
           </div>
-        </div>
+        </form>
       </DialogContent>
     </Dialog>
   );
