@@ -1,29 +1,18 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Analytics } from "@vercel/analytics/next";
-import { Navbar02 } from "@/components/ui/shadcn-io/navbar-react-course";
 
 export default function LandingPage() {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
-  const router = useRouter();
-
-  const handleCtaClick = (path: string) => {
-    router.push(path);
-  };
 
   return (
-    <div className="font-nunito h-screen flex justify-center">
-      <div className="w-full grid grid-rows-[60px_1fr_40px] gap-4 px-6 lg:px-">
-        <header className="g-header flex items-center justify-between">
-          <Navbar02 onCtaClick={handleCtaClick} />
-        </header>
-
-        <main className="g-body flex flex-col gap-6 items-center px-4 py-30 overflow-y-auto min-h-0">
+    <div className="font-nunito flex justify-center">
+      <div className="w-full">
+        <div className="flex flex-col gap-6 items-center px-4 py-30">
           <div className="flex flex-col gap-20">
             <div className="flex flex-col items-center gap-10">
               <div className="flex flex-col">
@@ -75,8 +64,7 @@ export default function LandingPage() {
               </div>
             </div>
           </div>
-        </main>
-        <div className="g-footer">test</div>
+        </div>
 
         <Analytics />
       </div>
