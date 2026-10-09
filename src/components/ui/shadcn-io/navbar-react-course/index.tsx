@@ -5,6 +5,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { useEffect, useState, useRef } from "react";
 import { BookOpenIcon, InfoIcon, LifeBuoyIcon, CodeXml } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -20,6 +21,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { authClient } from "@/lib/auth-client";
 
 // Hamburger icon component
 const HamburgerIcon = ({
@@ -73,8 +75,8 @@ export interface Navbar02Props extends React.HTMLAttributes<HTMLElement> {
   logo?: React.ReactNode;
   logoHref?: string;
   navigationLinks?: Navbar02NavItem[];
-  signInText?: string;
-  signInHref?: string;
+  logInText?: string;
+  logInHref?: string;
   ctaText?: string;
   ctaHref?: string;
   onSignInClick?: () => void;
@@ -92,8 +94,8 @@ export const Navbar02 = React.forwardRef<HTMLElement, Navbar02Props>(
     {
       className,
       navigationLinks = defaultNavigationLinks,
-      signInText = "Sign In",
-      ctaText = "Sign Up",
+      logInText = "Login",
+      ctaText = "Register",
       onSignInClick,
       onCtaClick,
       ...props
@@ -101,6 +103,7 @@ export const Navbar02 = React.forwardRef<HTMLElement, Navbar02Props>(
     ref
   ) => {
     const [isMobile, setIsMobile] = useState(false);
+    const { data: session, isPending } = authClient.useSession();
     const containerRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
@@ -337,16 +340,42 @@ export const Navbar02 = React.forwardRef<HTMLElement, Navbar02Props>(
           </div>
           {/* Right side */}
           <div className="flex items-center gap-3">
-            <Button
-              size="sm"
-              className="text-sm font-medium px-4 h-9 rounded-md shadow-sm"
-              onClick={(e) => {
-                e.preventDefault();
-                if (onCtaClick) onCtaClick("/signup"); // ← Calls your handleCtaClick
-              }}
-            >
-              {ctaText}
-            </Button>
+            {isPending ? null : session ? (
+              <Button
+                size="sm"
+                variant="outline"
+                className="text-sm font-medium px-4 h-9 rounded-md shadow-sm"
+                onClick={async () => {
+                  await authClient.signOut();
+                  if (onCtaClick) onCtaClick("/");
+                }}
+              >
+                Sign out
+              </Button>
+            ) : (
+              <>
+                <Button 
+                  size="sm"
+                  variant="outline"
+                  className="text-sm font-medium px-4 h-9 rounded-md shadow-sm"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (onCtaClick) onCtaClick("/login"); // ← Calls your handleCtaClick
+                  }}
+                >{logInText}
+                </Button>
+                <Button
+                  size="sm"
+                  className="text-sm font-medium px-4 h-9 rounded-md shadow-sm"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (onCtaClick) onCtaClick("/register"); // ← Calls your handleCtaClick
+                  }}
+                >
+                  {ctaText}
+                </Button>
+              </>
+            )}
 
             <ThemeToggle />
           </div>

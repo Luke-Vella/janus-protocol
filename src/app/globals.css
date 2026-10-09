@@ -132,3 +132,7 @@
       dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500;
   }
 }
+
+@utility input-group {
+  @apply flex flex-col grow gap-1;
+}
