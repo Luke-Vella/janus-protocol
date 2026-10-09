@@ -79,7 +79,6 @@ export interface Navbar02Props extends React.HTMLAttributes<HTMLElement> {
   logInHref?: string;
   ctaText?: string;
   ctaHref?: string;
-  onSignInClick?: () => void;
   onCtaClick?: (path: string) => void;
 }
 
@@ -96,7 +95,6 @@ export const Navbar02 = React.forwardRef<HTMLElement, Navbar02Props>(
       navigationLinks = defaultNavigationLinks,
       logInText = "Login",
       ctaText = "Register",
-      onSignInClick,
       onCtaClick,
       ...props
     },

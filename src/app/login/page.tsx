@@ -68,7 +68,7 @@ export default function SignInPage() {
 
             <div className="text-red-500 text-sm">{serverError}</div>
 
-            <Button type="submit" className="mt-4">Sign In</Button>
+            <Button type="submit" className="mt-4" disabled={isSubmitting}>{isSubmitting ? "Signing in..." : "Sign In"}</Button>
             <p className="mt-2 text-sm text-muted-foreground">Forgot your password? <a href="/forgot-password" className="text-primary">Reset it here</a>.</p>
 
 		</div>

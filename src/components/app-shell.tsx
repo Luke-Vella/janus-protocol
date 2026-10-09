@@ -1,12 +1,11 @@
 "use client";
 
 import React from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Navbar02 } from "@/components/ui/shadcn-io/navbar-react-course";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const pathname = usePathname();
 
   return (
     <div className="min-h-screen grid grid-rows-[60px_1fr_40px]">
