@@ -18,7 +18,7 @@ export type NavItem = {
 
 export const NAV_ITEMS: NavItem[] = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/todo", label: "To-Do", icon: ListChecks },
+  { href: "/todo", label: "Work", icon: ListChecks },
   { href: "/emails", label: "Emails", icon: Mail },
   { href: "/journal", label: "Journal", icon: BookOpen },
   { href: "/map", label: "Map", icon: Map },

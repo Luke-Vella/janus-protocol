@@ -95,7 +95,7 @@ const resendVerification = async () => {
 
 			<div className="mb-3">
 				<h1 className="text-2xl font-bold">Sign up</h1>
-				<p className="text-muted-foreground">Create an account to gain access to all features.</p>
+				<p className="text-muted-foreground">Congratulations on being picked to join JANUS's team. Please create an account to gain access to the platform.</p>
 			</div>
 
 			<div className="input-group">

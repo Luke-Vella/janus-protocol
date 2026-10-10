@@ -135,3 +135,44 @@
 @utility input-group {
   @apply flex flex-col grow gap-1;
 }
+/* Stat cards (dashboard) */
+@utility stat-card {
+  @apply grow rounded-lg border p-3;
+}
+@utility stat-card-text-only {
+  @apply flex items-center;
+}
+@utility stat-card-header {
+  @apply flex items-center gap-2;
+}
+@utility stat-card-icon {
+  @apply size-8;
+}
+@utility stat-card-text {
+  @apply flex flex-col;
+}
+@utility stat-card-title {
+  @apply font-semibold;
+}
+@utility stat-card-value {
+  @apply text-muted-foreground;
+}
+/* The attribute selector raises specificity above Progress's built-in bg-primary classes */
+@utility stat-bar {
+  @apply mt-3;
+}
+@utility stat-bar-health {
+  &[data-slot="progress"] {
+    @apply bg-red-500/20 [&>div]:bg-red-500;
+  }
+}
+@utility stat-bar-stress {
+  &[data-slot="progress"] {
+    @apply bg-yellow-500/20 [&>div]:bg-yellow-500;
+  }
+}
+@utility stat-bar-stamina {
+  &[data-slot="progress"] {
+    @apply bg-blue-500/20 [&>div]:bg-blue-500;
+  }
+}

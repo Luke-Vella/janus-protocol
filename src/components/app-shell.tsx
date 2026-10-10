@@ -22,8 +22,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   ) && !!session && !isPending;
 
   return (
-    <div className="min-h-screen grid grid-rows-[60px_1fr_40px]">
-      <header className="g-header flex items-center justify-between px-6">
+    <div className="min-h-screen grid grid-rows-[60px_1fr]">
+      <header className="g-header flex items-center justify-between">
         <Navbar02
           mobileNavigationLinks={MOBILE_LINKS}
           onCtaClick={(path) =>
@@ -40,8 +40,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           {children}
         </main>
       </div>
-
-      <footer className="g-footer px-6 py-3">Footer</footer>
     </div>
   );
 }
