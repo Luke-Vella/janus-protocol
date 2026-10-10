@@ -9,7 +9,7 @@ export default async function HomePage() {
       <div className="flex flex-col items-center gap-4 py-20 text-center">
         <h1 className="text-4xl font-bold">Welcome to Janus</h1>
         <p className="text-muted-foreground">
-          Sign in or create an account to access your dashboard.
+          Sign in or create an account to start your story.
         </p>
       </div>
     );

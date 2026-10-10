@@ -4,6 +4,8 @@ import * as React from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useEffect, useState, useRef } from "react";
 import { BookOpenIcon, InfoIcon, LifeBuoyIcon, CodeXml } from "lucide-react";
+import Link from "next/link";
+import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 import {
@@ -62,6 +64,7 @@ export interface Navbar02NavItem {
   label: string;
   submenu?: boolean;
   icon?: string;
+  Icon?: LucideIcon;
   type?: "description" | "simple" | "icon";
   items?: Array<{
     href: string;
@@ -75,6 +78,7 @@ export interface Navbar02Props extends React.HTMLAttributes<HTMLElement> {
   logo?: React.ReactNode;
   logoHref?: string;
   navigationLinks?: Navbar02NavItem[];
+  mobileNavigationLinks?: Navbar02NavItem[];
   logInText?: string;
   logInHref?: string;
   ctaText?: string;
@@ -93,6 +97,7 @@ export const Navbar02 = React.forwardRef<HTMLElement, Navbar02Props>(
     {
       className,
       navigationLinks = defaultNavigationLinks,
+      mobileNavigationLinks,
       logInText = "Login",
       ctaText = "Register",
       onCtaClick,
@@ -101,6 +106,8 @@ export const Navbar02 = React.forwardRef<HTMLElement, Navbar02Props>(
     ref
   ) => {
     const [isMobile, setIsMobile] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
+    const mobileLinks = mobileNavigationLinks ?? navigationLinks;
     const { data: session, isPending } = authClient.useSession();
     const containerRef = useRef<HTMLElement>(null);
 
@@ -151,7 +158,7 @@ export const Navbar02 = React.forwardRef<HTMLElement, Navbar02Props>(
           <div className="flex items-center gap-2">
             {/* Mobile menu trigger */}
             {isMobile && (
-              <Popover>
+              <Popover open={menuOpen} onOpenChange={setMenuOpen}>
                 <PopoverTrigger asChild>
                   <Button
                     className="group h-9 w-9 hover:bg-accent hover:text-accent-foreground"
@@ -164,7 +171,7 @@ export const Navbar02 = React.forwardRef<HTMLElement, Navbar02Props>(
                 <PopoverContent align="start" className="w-64 p-1">
                   <NavigationMenu className="max-w-none">
                     <NavigationMenuList className="flex-col items-start gap-0">
-                      {navigationLinks.map((link, index) => (
+                      {mobileLinks.map((link, index) => (
                         <NavigationMenuItem key={index} className="w-full">
                           {link.submenu ? (
                             <>
@@ -185,23 +192,25 @@ export const Navbar02 = React.forwardRef<HTMLElement, Navbar02Props>(
                               </ul>
                             </>
                           ) : (
-                            <button
-                              onClick={(e) => e.preventDefault()}
-                              className="flex w-full items-center rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer no-underline"
+                            <Link
+                              href={link.href ?? "#"}
+                              onClick={() => setMenuOpen(false)}
+                              className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer no-underline"
                             >
+                              {link.Icon && <link.Icon className="size-4" />}
                               {link.label}
-                            </button>
+                            </Link>
                           )}
                           {/* Add separator between different types of items */}
-                          {index < navigationLinks.length - 1 &&
+                          {index < mobileLinks.length - 1 &&
                             ((!link.submenu &&
-                              navigationLinks[index + 1].submenu) ||
+                              mobileLinks[index + 1].submenu) ||
                               (link.submenu &&
-                                !navigationLinks[index + 1].submenu) ||
+                                !mobileLinks[index + 1].submenu) ||
                               (link.submenu &&
-                                navigationLinks[index + 1].submenu &&
+                                mobileLinks[index + 1].submenu &&
                                 link.type !==
-                                  navigationLinks[index + 1].type)) && (
+                                  mobileLinks[index + 1].type)) && (
                               <div
                                 role="separator"
                                 aria-orientation="horizontal"
@@ -219,7 +228,7 @@ export const Navbar02 = React.forwardRef<HTMLElement, Navbar02Props>(
             <div className="flex items-center gap-6">
               <button
                 onClick={(e) => e.preventDefault()}
-                className="flex items-center space-x-2 text-primary hover:text-primary/90 transition-colors cursor-pointer"
+                className="flex items-center space-x-2 text-foreground hover:text-primary/90 transition-colors cursor-pointer"
               >
                 <div className="text-2xl">
                   {" "}
@@ -230,7 +239,7 @@ export const Navbar02 = React.forwardRef<HTMLElement, Navbar02Props>(
                   />
                 </div>
                 <span className="hidden font-bold text-xl sm:inline-block">
-                  LUKE VELLA
+                  JANUS PROTOCOL
                 </span>
               </button>
               {/* Navigation menu */}
