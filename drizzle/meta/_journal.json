@@ -8,6 +8,13 @@
       "when": 1791554771874,
       "tag": "0000_init_auth",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791698091161,
+      "tag": "0001_stiff_gamora",
+      "breakpoints": true
     }
   ]
 }

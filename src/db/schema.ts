@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, index } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, index, integer } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -94,3 +94,37 @@ export const accountRelations = relations(account, ({ one }) => ({
     references: [user.id],
   }),
 }));
+
+
+export const usetStats = pgTable(
+	"user_stats",
+	{
+		id: text("id").primaryKey(),
+		userId: text("user_id")
+			.notNull()
+			.references(() => user.id, { onDelete: "cascade" }),
+		health: integer("health").notNull().default(100),
+		stress: integer("stress").notNull().default(0),
+		stamina: integer("stamina").notNull().default(100),
+		clearanceLevel: integer("clearance_level").notNull().default(1),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at")
+			.$onUpdate(() => /* @__PURE__ */ new Date())
+			.notNull(),
+	},
+	(table) => [index("user_stats_userId_idx").on(table.userId)],
+);
+
+export const clearanceLevels = pgTable(
+	"clearance_level",
+	{
+		id: text("id").primaryKey(),
+		level: integer("level").notNull(),
+		name: text("name").notNull(),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at")
+			.$onUpdate(() => /* @__PURE__ */ new Date())
+			.notNull(),
+	},
+	(table) => [index("clearance_level_level_idx").on(table.level)],
+);
