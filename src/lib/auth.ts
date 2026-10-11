@@ -35,6 +35,9 @@ export const auth = betterAuth({
 					await db
 						.insert(schema.userStats)
 						.values({ id: crypto.randomUUID(), userId: user.id });
+
+					await db
+						.insert(schema.user)
 				},
 			},
 		},

@@ -1,0 +1,1 @@
+ALTER TABLE "story_beat" ADD COLUMN "talking_to_player" boolean DEFAULT false NOT NULL;

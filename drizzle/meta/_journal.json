@@ -29,6 +29,20 @@
       "when": 1791700512765,
       "tag": "0003_marvelous_rictor",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1791710821161,
+      "tag": "0004_story_tables",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791713047046,
+      "tag": "0005_story_beat_talking_to_player",
+      "breakpoints": true
     }
   ]
 }
