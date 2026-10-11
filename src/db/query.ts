@@ -1,6 +1,6 @@
 import { db } from '@/db'
 import { alias } from 'drizzle-orm/pg-core'
-import { and, eq, getTableColumns, sql } from 'drizzle-orm'
+import { eq, getTableColumns, sql } from 'drizzle-orm'
 import { userStats, userStoryProgress,  clearanceLevels, npc, storyBeat } from '@/db/schema'
 import { auth } from '@/lib/auth'
 import { headers } from 'next/headers'

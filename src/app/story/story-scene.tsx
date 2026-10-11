@@ -97,7 +97,7 @@ export default function StoryScene({ beats, initialIndex }: { beats: SceneBeat[]
 			</div>
 
 			<p className="absolute bottom-2 left-3 max-w-72 text-[10px] leading-tight text-white/70">
-				<b>Full transparency time</b>: JANUS Protocol is currently making use of placeholder AI art while it's still being built.
+				<b>Full transparency time</b>: JANUS Protocol is currently making use of placeholder AI art while it&apos;s still being built.
 				With that being said, I am actively looking for artists to collaborate on this project.{" "}
 				<a href="mailto:luke.vella.0697@gmail.com" className="underline hover:text-white">
 					Hit me up if you&apos;re interested!

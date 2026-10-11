@@ -1,7 +1,8 @@
+import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 
-export default function PlayerStat({ label, icon: Icon, value, bar }: { label: string; icon: any; value: number | string; bar: string }) {
+export default function PlayerStat({ label, icon: Icon, value, bar }: { label: string; icon: LucideIcon; value: number | string; bar: string }) {
 	return (
 		<div
 			className={cn(
