@@ -2,32 +2,17 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
-// Temporary mock data until the game-state store exists
-const DUTIES = [
-	{
-		id: "samples",
-		label: "Prepare samples for Test 3B",
-		place: "Lab A",
-		done: false,
-	},
-	{
-		id: "report",
-		label: "Submit daily report",
-		place: "Internal Portal",
-		done: false,
-	},
-	{
-		id: "tanaka",
-		label: "Meet with Dr. Tanaka",
-		place: "Research Wing",
-		done: false,
-	},
-];
+export type DailyDuty = {
+	id: string;
+	label: string;
+	place: string;
+	done: boolean;
+};
 
-export function DailyDuties() {
+export function DailyDuties({ duties }: { duties: DailyDuty[] }) {
 	return (
 		<ul className="mt-3 flex flex-col gap-3">
-			{DUTIES.map(({ id, label, place, done }) => (
+			{duties.map(({ id, label, place, done }) => (
 				<li key={id} className="flex items-center gap-3">
 					<Checkbox
 						id={id}

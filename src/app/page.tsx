@@ -2,7 +2,8 @@ import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { Heart, Brain, Zap, IdCardLanyard, Goal, Calendar } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { DailyDuties } from "@/components/game/daily-duties";
+import PlayerDailyDuties from "@/components/game/player-daily-duties";
+import type { DailyDuty } from "@/components/game/daily-duties";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -10,9 +11,13 @@ import Link from "next/link";
 import { db } from "@/db";
 import { eq } from "drizzle-orm";
 import {clearanceLevels, userStats } from "@/db/schema";
+import query from "@/db/query"
+import PlayerStat from "@/components/game/player-stat";
+import PlayerObjective from "@/components/game/player-objective";
 
-
-// Temporary values until the game-state store exists
+// Temporary mock data until duties come from the DB
+const DUTIES: DailyDuty[] = [
+];
 
 export default async function HomePage() {
 	const session = await auth.api.getSession({ headers: await headers() });
@@ -30,32 +35,17 @@ export default async function HomePage() {
 		);
 	}
 
-const [row] = await db
-	.select({
-		health: userStats.health,
-		stamina: userStats.stamina,
-		stress: userStats.stress,
-		clearanceLevel: userStats.clearanceLevel,
-		clearanceName: clearanceLevels.name
-	})
-	.from(userStats)
-	.leftJoin(
-		clearanceLevels,
-		eq(clearanceLevels.level, userStats.clearanceLevel)
-	)
-	.where(eq(userStats.userId, session.user.id))
-	.limit(1);
-
+const [row] = await query.getUserStats(session.user.id)
 if (!row) { /* no stats row: show a fallback or insert defaults */ }
 
- const STATS = [
+const stats = [
 	{ label: "Health", icon: Heart, value: row.health, bar: "stat-bar-health" },
 	{ label: "Stress", icon: Brain, value: row.stress, bar: "stat-bar-stress" },
 	{ label: "Stamina", icon: Zap, value: row.stamina, bar: "stat-bar-stamina" },
 	{
 		label: "Clearance level",
 		icon: IdCardLanyard,
-		value: 'Lvl ' + row.clearanceLevel + ':' + row.clearanceName,
+		value: 'Lvl ' + row.clearanceLevel + ': ' + row.clearanceName,
 		bar: "stat-bar-clearance",
 	},
 ];
@@ -92,84 +82,22 @@ if (!row) { /* no stats row: show a fallback or insert defaults */ }
 			</div>
 
 			<div className="flex flex-col gap-4 lg:flex-row">
-				{STATS.map(({ label, icon: Icon, value, bar }) => (
-					<div
+				{stats.map(({ label, icon: Icon, value, bar }) => (
+					<PlayerStat
 						key={label}
-						className={cn(
-							"stat-card",
-							typeof value === "number"
-								? null
-								: "stat-card-text-only",
-						)}
-					>
-						{typeof value === "number" && (
-							<div>
-								<div className="stat-card-header">
-									<Icon className="stat-card-icon" />
-									<div className="stat-card-text">
-										<h2 className="stat-card-title">
-											{label}
-										</h2>
-										<p className="stat-card-value">
-											{typeof value === "number"
-												? `${value}%`
-												: value}
-										</p>
-									</div>
-								</div>
-								<Progress
-									value={value}
-									aria-label={label}
-									className={`stat-bar ${bar}`}
-								/>
-							</div>
-						)}
-						{typeof value !== "number" && (
-							<div className="stat-card-header">
-								<Icon
-									className={
-										typeof value === "number"
-											? "size-8"
-											: "size-10"
-									}
-								/>
-								<div className="stat-card-text">
-									<h2 className="stat-card-title">{label}</h2>
-									<p className="stat-card-value">{value}</p>
-								</div>
-							</div>
-						)}
-					</div>
+						label={label}
+						icon={Icon}
+						value={value}
+						bar={bar}
+					/>
 				))}
 			</div>
 
 			<div className="flex flex-col lg:flex-row gap-4">
-				<div className="min-w-64 flex-[2] rounded-lg border p-3 flex flex-col gap-2">
-					<div className="flex items-center gap-1">
-						<Calendar className="size-6" />
-						<h1 className="text-2xl font-bold">Daily Duties</h1>
-					</div>
-					<DailyDuties />
-				</div>
-				<div className="min-w-48 flex-1 rounded-lg border p-3 flex flex-col gap-3 justify-between">
-					<div>
-						<div className="flex items-center gap-1">
-							<Goal className="size-6" />
-							<h1 className="text-2xl font-bold">Current Objective</h1>
-						</div>
-
-						<p className="text-muted-foreground">Attend your probationary training session.</p>
-					</div>
-
-					<Button 
-						className="w-full" 
-						variant="outline"
-						asChild>
-						<Link href="/story">
-							Open Storyboard 
-						</Link>
-					</Button>
-				</div>
+				<PlayerDailyDuties duties={DUTIES} />
+				<PlayerObjective
+					objective="Attend your probationary training session."
+				/>
 
 			</div>
 		</div>
