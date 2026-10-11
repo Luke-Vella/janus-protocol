@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import { pgTable, text, timestamp, boolean, index, integer } from "drizzle-orm/pg-core";
+import { uniqueIndex } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -95,7 +96,6 @@ export const accountRelations = relations(account, ({ one }) => ({
   }),
 }));
 
-
 export const userStats = pgTable(
 	"user_stats",
 	{
@@ -128,5 +128,5 @@ export const clearanceLevels = pgTable(
 			.defaultNow()
 			.notNull(),
 	},
-	(table) => [index("clearance_level_level_idx").on(table.level)],
+	(table) => [uniqueIndex("clearance_level_level_idx").on(table.level)],
 );

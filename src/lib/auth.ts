@@ -33,7 +33,7 @@ export const auth = betterAuth({
 			create: {
 				after: async (user) => {
 					await db
-						.insert(schema.usetStats)
+						.insert(schema.userStats)
 						.values({ id: crypto.randomUUID(), userId: user.id });
 				},
 			},

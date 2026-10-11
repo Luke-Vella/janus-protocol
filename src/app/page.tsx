@@ -7,18 +7,12 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
+import { db } from "@/db";
+import { eq } from "drizzle-orm";
+import {clearanceLevels, userStats } from "@/db/schema";
+
+
 // Temporary values until the game-state store exists
-const STATS = [
-	{ label: "Health", icon: Heart, value: 100, bar: "stat-bar-health" },
-	{ label: "Stress", icon: Brain, value: 0, bar: "stat-bar-stress" },
-	{ label: "Stamina", icon: Zap, value: 100, bar: "stat-bar-stamina" },
-	{
-		label: "Clearance level",
-		icon: IdCardLanyard,
-		value: "Level 1: Fresh Recruit",
-		bar: "stat-bar-clearance",
-	},
-];
 
 export default async function HomePage() {
 	const session = await auth.api.getSession({ headers: await headers() });
@@ -35,6 +29,36 @@ export default async function HomePage() {
 			</div>
 		);
 	}
+
+const [row] = await db
+	.select({
+		health: userStats.health,
+		stamina: userStats.stamina,
+		stress: userStats.stress,
+		clearanceLevel: userStats.clearanceLevel,
+		clearanceName: clearanceLevels.name
+	})
+	.from(userStats)
+	.leftJoin(
+		clearanceLevels,
+		eq(clearanceLevels.level, userStats.clearanceLevel)
+	)
+	.where(eq(userStats.userId, session.user.id))
+	.limit(1);
+
+if (!row) { /* no stats row: show a fallback or insert defaults */ }
+
+ const STATS = [
+	{ label: "Health", icon: Heart, value: row.health, bar: "stat-bar-health" },
+	{ label: "Stress", icon: Brain, value: row.stress, bar: "stat-bar-stress" },
+	{ label: "Stamina", icon: Zap, value: row.stamina, bar: "stat-bar-stamina" },
+	{
+		label: "Clearance level",
+		icon: IdCardLanyard,
+		value: 'Lvl ' + row.clearanceLevel + ':' + row.clearanceName,
+		bar: "stat-bar-clearance",
+	},
+];
 
 	return (
 		<div className="flex grow flex-col gap-6 h-full">
