@@ -28,5 +28,16 @@ export const auth = betterAuth({
             surname: { type: "string", required: true },
         },
     },
+	databaseHooks: {
+		user: {
+			create: {
+				after: async (user) => {
+					await db
+						.insert(schema.usetStats)
+						.values({ id: crypto.randomUUID(), userId: user.id });
+				},
+			},
+		},
+	},
     plugins: [username()],
 });

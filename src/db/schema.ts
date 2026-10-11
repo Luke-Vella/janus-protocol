@@ -96,7 +96,7 @@ export const accountRelations = relations(account, ({ one }) => ({
 }));
 
 
-export const usetStats = pgTable(
+export const userStats = pgTable(
 	"user_stats",
 	{
 		id: text("id").primaryKey(),
@@ -110,6 +110,7 @@ export const usetStats = pgTable(
 		createdAt: timestamp("created_at").defaultNow().notNull(),
 		updatedAt: timestamp("updated_at")
 			.$onUpdate(() => /* @__PURE__ */ new Date())
+			.defaultNow()
 			.notNull(),
 	},
 	(table) => [index("user_stats_userId_idx").on(table.userId)],
@@ -124,6 +125,7 @@ export const clearanceLevels = pgTable(
 		createdAt: timestamp("created_at").defaultNow().notNull(),
 		updatedAt: timestamp("updated_at")
 			.$onUpdate(() => /* @__PURE__ */ new Date())
+			.defaultNow()
 			.notNull(),
 	},
 	(table) => [index("clearance_level_level_idx").on(table.level)],

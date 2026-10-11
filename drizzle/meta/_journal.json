@@ -15,6 +15,13 @@
       "when": 1791698091161,
       "tag": "0001_stiff_gamora",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791698812607,
+      "tag": "0002_nebulous_skaar",
+      "breakpoints": true
     }
   ]
 }
