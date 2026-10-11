@@ -14,7 +14,7 @@ export function GameSidebar() {
         <div className="px-2 text-center text-xs font-semibold uppercase tracking-[0.3em]">
           Janus
           <br />
-          Protocol
+          Directory
         </div>
         <nav aria-label="Janus Protocol" className="flex flex-col gap-1">
           {NAV_ITEMS.map(({ href, label, icon: Icon }) => {

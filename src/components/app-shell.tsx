@@ -9,7 +9,7 @@ import { authClient } from "@/lib/auth-client";
 
 
 const MOBILE_LINKS = [
-  { href: "/About", label: "About" },
+  { href: "/about", label: "About" },
   ...NAV_ITEMS.map(({ href, label, icon }) => ({ href, label, Icon: icon })),
 ];
 

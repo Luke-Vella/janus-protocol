@@ -1,16 +1,9 @@
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
-import { Heart, Brain, Zap, IdCardLanyard, Goal, Calendar } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
+import { Heart, Brain, Zap, IdCardLanyard } from "lucide-react";
 import PlayerDailyDuties from "@/components/game/player-daily-duties";
 import type { DailyDuty } from "@/components/game/daily-duties";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 
-import { db } from "@/db";
-import { eq } from "drizzle-orm";
-import {clearanceLevels, userStats } from "@/db/schema";
 import query from "@/db/query"
 import PlayerStat from "@/components/game/player-stat";
 import PlayerObjective from "@/components/game/player-objective";
@@ -20,6 +13,7 @@ const DUTIES: DailyDuty[] = [
 ];
 
 export default async function HomePage() {
+	
 	const session = await auth.api.getSession({ headers: await headers() });
 
 	if (!session) {
@@ -35,7 +29,7 @@ export default async function HomePage() {
 		);
 	}
 
-const [row] = await query.getUserStats(session.user.id)
+const [row] = await query.getUserStats()
 if (!row) { /* no stats row: show a fallback or insert defaults */ }
 
 const stats = [
