@@ -4,6 +4,7 @@ import { sql } from "drizzle-orm";
 import * as schema from "../schema";
 import { clearanceLevelData } from "./data/clearance-levels";
 import { npcs } from "./data/npcs";
+import { rooms } from "./data/rooms";
 import { chapters, beats } from "./data/story";
 
 // Don't import "@/db": it throws if DATABASE_URL isn't set yet,
@@ -20,12 +21,19 @@ const db = drizzle(client, { schema, casing: "snake_case" });
 async function main() {
   await db.transaction(async (tx) => {
     await tx
-      .insert(schema.clearanceLevels)
-      .values([...clearanceLevelData])
-      .onConflictDoUpdate({
-        target: schema.clearanceLevels.level,
-        set: { name: sql`excluded.name`, updatedAt: new Date() },
+		.insert(schema.clearanceLevels)
+		.values([...clearanceLevelData])
+		.onConflictDoUpdate({
+		target: schema.clearanceLevels.level,
+		set: { name: sql`excluded.name`, updatedAt: new Date() },
       });
+	await tx
+		.insert(schema.room)
+		.values([...rooms])
+		.onConflictDoUpdate({
+		target: schema.room.name,
+		set: { name: sql`excluded.name`, updatedAt: new Date() },
+	});
     // await tx.insert(schema.chapters)... same pattern, target: slug
     await tx
       .insert(schema.npc)
@@ -52,6 +60,7 @@ async function main() {
           beatNumber: sql`excluded.beat_number`,
           text: sql`excluded.text`,
           npcId: sql`excluded.npc_id`,
+		  roomId: sql`excluded.room_id`,
           talkingToPlayer: sql`excluded.talking_to_player`,
           background: sql`excluded.background`,
           nextBeatId: sql`excluded.next_beat_id`,

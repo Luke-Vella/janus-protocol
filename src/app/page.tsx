@@ -6,7 +6,7 @@ import type { DailyDuty } from "@/components/game/daily-duties";
 
 import query from "@/db/query"
 import PlayerStat from "@/components/game/player-stat";
-import PlayerObjective from "@/components/game/player-objective";
+import PlayerChapter from "@/components/game/player-chapter";
 
 // Temporary mock data until duties come from the DB
 const DUTIES: DailyDuty[] = [
@@ -29,20 +29,27 @@ export default async function HomePage() {
 		);
 	}
 
-const [row] = await query.getUserStats()
-if (!row) { /* no stats row: show a fallback or insert defaults */ }
+	const [row] = await query.getUserStats()
+	if (!row) { /* no stats row: show a fallback or insert defaults */ }
 
-const stats = [
-	{ label: "Health", icon: Heart, value: row.health, bar: "stat-bar-health" },
-	{ label: "Stress", icon: Brain, value: row.stress, bar: "stat-bar-stress" },
-	{ label: "Stamina", icon: Zap, value: row.stamina, bar: "stat-bar-stamina" },
-	{
-		label: "Clearance level",
-		icon: IdCardLanyard,
-		value: 'Lvl ' + row.clearanceLevel + ': ' + row.clearanceName,
-		bar: "stat-bar-clearance",
-	},
-];
+	const stats = [
+		{ label: "Health", icon: Heart, value: row.health, bar: "stat-bar-health" },
+		{ label: "Stress", icon: Brain, value: row.stress, bar: "stat-bar-stress" },
+		{ label: "Stamina", icon: Zap, value: row.stamina, bar: "stat-bar-stamina" },
+		{
+			label: "Clearance level",
+			icon: IdCardLanyard,
+			value: 'Lvl ' + row.clearanceLevel + ': ' + row.clearanceName,
+			bar: "stat-bar-clearance",
+		},
+	];
+
+	const greetingTextBasedOnTime = (() => {
+		const hour = new Date().getHours();
+		if (hour < 12) return "Good Morning";
+		if (hour < 18) return "Good Afternoon";
+		return "Good Evening";
+	})();
 
 	return (
 		<div className="flex grow flex-col gap-6 h-full">
@@ -57,7 +64,7 @@ const stats = [
 						})}
 					</p>
 					<h1 className="text-2xl font-bold">
-						Good Morning, {session.user.name}
+						{greetingTextBasedOnTime}, {session.user.name}
 					</h1>
 					<p className="text-muted-foreground"></p>
 				</div>
@@ -89,9 +96,7 @@ const stats = [
 
 			<div className="flex flex-col lg:flex-row gap-4">
 				<PlayerDailyDuties duties={DUTIES} />
-				<PlayerObjective
-					objective="Attend your probationary training session."
-				/>
+				<PlayerChapter />
 
 			</div>
 		</div>

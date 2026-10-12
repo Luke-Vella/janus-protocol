@@ -8,8 +8,11 @@ import { GAME_ROUTES, NAV_ITEMS } from "@/components/game/nav-items";
 import { authClient } from "@/lib/auth-client";
 
 
+import { HelpCircle, Info } from "lucide-react";
+
 const MOBILE_LINKS = [
-  { href: "/about", label: "About" },
+  { href: "/how-to-play", label: "How to Play", Icon: HelpCircle },
+  { href: "/about", label: "About", Icon: Info },
   ...NAV_ITEMS.map(({ href, label, icon }) => ({ href, label, Icon: icon })),
 ];
 

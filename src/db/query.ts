@@ -1,7 +1,7 @@
 import { db } from '@/db'
 import { alias } from 'drizzle-orm/pg-core'
 import { eq, getTableColumns, sql } from 'drizzle-orm'
-import { userStats, userStoryProgress,  clearanceLevels, npc, storyBeat } from '@/db/schema'
+import { userStats, userStoryProgress,  clearanceLevels, npc, story, storyBeat, room } from '@/db/schema'
 import { auth } from '@/lib/auth'
 import { headers } from 'next/headers'
 
@@ -62,4 +62,48 @@ const setCurrentBeat = async (beatId: string) => {
 		.where(eq(userStoryProgress.userId, userId))
 }
 
-export default { getUserStats, getCurrentUserChapterBeats, setCurrentBeat };
+const getRoomById = async(roomId: string) => {	
+		return await db
+			.select({room})
+			.from(room)
+			.where(eq(room.id, roomId));
+}
+
+const getCurrentRoomId = async () => {
+	const userId = await getSessionUserId()
+	if (!userId) return null
+
+	const result = await db
+		.select({ currentRoomId: userStats.currentRoomId })
+		.from(userStats)
+		.where(eq(userStats.userId, userId))
+		.limit(1)
+
+	return result.length > 0 ? result[0].currentRoomId : null
+}
+
+const getCurrentUserChapter = async () => {
+	const userId = await getSessionUserId()
+	if (!userId) return null
+
+	const result = await db
+		.select({ id: story.id, name: story.name, description: story.description, chapterNumber: story.chapterNumber })
+		.from(story)
+		.innerJoin(userStoryProgress, eq(userStoryProgress.currentChapterId, story.id))
+		.where(eq(userStoryProgress.userId, userId))
+		.limit(1)
+
+	return result.length > 0 ? result[0] : null
+}
+
+const goToRoom = async (roomId: string) => {
+	const userId = await getSessionUserId()
+	if (!userId) return
+
+	await db
+		.update(userStats)
+		.set({ currentRoomId: roomId })
+		.where(eq(userStats.userId, userId))
+}
+
+export default { getUserStats, getCurrentUserChapterBeats, setCurrentBeat, getRoomById, goToRoom, getCurrentRoomId, getCurrentUserChapter };

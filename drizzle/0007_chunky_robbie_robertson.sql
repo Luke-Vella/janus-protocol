@@ -1,0 +1,1 @@
+ALTER TABLE "room" ADD COLUMN "key" text NOT NULL;

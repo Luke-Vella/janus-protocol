@@ -1,0 +1,2 @@
+ALTER TABLE "user_story_progress" ADD COLUMN "current_chapter_id" text DEFAULT 'chapter-1' NOT NULL;--> statement-breakpoint
+ALTER TABLE "user_story_progress" ADD CONSTRAINT "user_story_progress_current_chapter_id_story_id_fk" FOREIGN KEY ("current_chapter_id") REFERENCES "public"."story"("id") ON DELETE restrict ON UPDATE no action;

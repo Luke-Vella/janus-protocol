@@ -107,6 +107,7 @@ export const userStats = pgTable(
 		stress: integer().notNull().default(0),
 		stamina: integer().notNull().default(100),
 		clearanceLevel: integer().notNull().default(1),
+		currentRoomId: text().references(() => room.id, { onDelete: "set null" }),
 		createdAt: timestamp().defaultNow().notNull(),
 		updatedAt: timestamp()
 			.$onUpdate(() => /* @__PURE__ */ new Date())
@@ -175,6 +176,7 @@ export const storyBeat = pgTable(
 		beatNumber: integer().notNull(),
 		text: text().notNull(),
 		npcId: text().references(() => npc.id, { onDelete: "set null" }),
+		roomId: text().references(() => room.id, { onDelete: "set null" }),
 		talkingToPlayer: boolean().notNull().default(false),
 		background: text(),
 		nextBeatId: text().references((): AnyPgColumn => storyBeat.id, {
@@ -218,6 +220,10 @@ export const userStoryProgress = pgTable(
 		userId: text()
 			.primaryKey()
 			.references(() => user.id, { onDelete: "cascade" }),
+		currentChapterId: text()
+			.notNull()
+			.default("chapter-1")
+			.references(() => story.id, { onDelete: "restrict" }),
 		currentBeatId: text()
 			.notNull()
 			.references(() => storyBeat.id, { onDelete: "restrict" }),
@@ -248,4 +254,19 @@ export const userStoryChoice = pgTable(
 		uniqueIndex("user_story_choice_user_beat_idx").on(table.userId, table.beatId),
 		index("user_story_choice_choiceId_idx").on(table.choiceId),
 	],
+);
+
+export const room = pgTable(
+	"room",
+	{
+		id: text().primaryKey(),
+		key: text().notNull(),
+		name: text().notNull(),
+		createdAt: timestamp().defaultNow().notNull(),
+		updatedAt: timestamp()
+			.$onUpdate(() => /* @__PURE__ */ new Date())
+			.defaultNow()
+			.notNull(),
+	},
+	(table) => [uniqueIndex("room_name_idx").on(table.name)],
 );

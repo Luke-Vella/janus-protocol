@@ -43,6 +43,27 @@
       "when": 1791713047046,
       "tag": "0005_story_beat_talking_to_player",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1791823521378,
+      "tag": "0006_rich_true_believers",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1791824541833,
+      "tag": "0007_chunky_robbie_robertson",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1791827195560,
+      "tag": "0008_flashy_valeria_richards",
+      "breakpoints": true
     }
   ]
 }
